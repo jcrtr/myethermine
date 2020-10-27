@@ -25,7 +25,10 @@ dependencies:
     sdk: flutter
   http: ^0.12.2
   cupertino_icons: ^1.0.0
+  flutter_bloc: ^6.0.6
   equatable: ^1.2.5
+  web3dart: ^1.2.3
+  intl: ^0.16.1
 
 dev_dependencies:
   flutter_test:

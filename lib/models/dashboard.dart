@@ -2,48 +2,44 @@ import 'package:equatable/equatable.dart';
 
 class Dashboard extends Equatable{
 
-  final String worker;
-  final int reportedHashrate;
+  final int minPayout;
+
   final int currentHashrate;
+  final int reportedHashrate;
   final int validShares;
   final int invalidShares;
   final int staleShares;
+  // final int activeWorkers;
 
   Dashboard({
-    this.worker,
-    this.reportedHashrate,
+    // this.status,
+    this.minPayout,
     this.currentHashrate,
+    this.reportedHashrate,
+    this.validShares,
     this.invalidShares,
     this.staleShares,
-    this.validShares,
+    // this.activeWorkers,
   });
 
   @override
   List<Object> get props => [
-    worker,
+    // status,
+    minPayout,
     reportedHashrate,
     currentHashrate,
-    invalidShares,
-    staleShares,
-    validShares,
   ];
 
   static Dashboard fromJson(dynamic json) {
-    final workers = json['data']['workers'][0];
+    final data = json['data'];
     return Dashboard(
-      worker: workers['worker'],
-      reportedHashrate: workers['reportedHashrate'],
-      currentHashrate: workers['currentHashrate'],
-      invalidShares: workers['invalidShares'],
-      staleShares: workers['staleShares'],
-      validShares: workers['validShares'],
+      minPayout: data['settings']['minPayout'],
+      reportedHashrate: data['currentStatistics']['reportedHashrate'],
+      // currentHashrate: _data['currentStatistics']['currentHashrate'],
+      validShares: data['currentStatistics']['validShares'],
+      invalidShares: data['currentStatistics']['invalidShares'],
+      staleShares: data['currentStatistics']['staleShares'],
+      // activeWorkers: _data['currentStatistics']['activeWorkers'],
     );
   }
-  // Dashboard.fromJson(Map<String,dynamic> parsedJson)
-  //     : worker = parsedJson['worker'],
-  //       reportedHashrate = parsedJson['reportedHashrate'],
-  //       currentHashrate = parsedJson['currentHashrate'],
-  //       validShares = parsedJson['validShares'],
-  //       invalidShares = parsedJson['invalidShares'],
-  //       staleShares = parsedJson['staleShares'];
 }

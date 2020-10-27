@@ -3,9 +3,8 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:myethermine/models/dashboard.dart';
 
-
 class DashboardApiClient {
-  static const baseUrl = 'https://api.ethermine.org';
+  static const _baseUrl = 'https://api.ethermine.org';
   final http.Client httpClient;
 
   DashboardApiClient({
@@ -13,7 +12,7 @@ class DashboardApiClient {
   }) : assert(httpClient != null);
 
   Future<Dashboard> fetchDashboard() async {
-    final ethUrl = '$baseUrl/miner/0x460a6deec1d52c9c397e92fdc8c4bc05d10f8429/dashboard';
+    final ethUrl = '$_baseUrl/miner/0x27C9f019776501564046Ef04f83443b598ea3814/dashboard';
     final ethResponse = await this.httpClient.get(ethUrl);
     if (ethResponse.statusCode != 200) {
       throw Exception('error getting locationId for city');
