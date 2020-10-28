@@ -1,45 +1,59 @@
 import 'package:equatable/equatable.dart';
 
-class Dashboard extends Equatable{
-
-  final int minPayout;
-
-  final int currentHashrate;
+class Dashboard extends Equatable {
+  final double coinsPerMin;
+  final double usdPerMin;
+  final double btcPerMin;
+  final double currentHashrate;
+  final double averageHashrate;
   final int reportedHashrate;
   final int validShares;
   final int invalidShares;
   final int staleShares;
-  // final int activeWorkers;
+  final int activeWorkers;
 
   Dashboard({
     // this.status,
-    this.minPayout,
+    this.coinsPerMin,
+    this.usdPerMin,
+    this.btcPerMin,
     this.currentHashrate,
+    this.averageHashrate,
     this.reportedHashrate,
     this.validShares,
     this.invalidShares,
     this.staleShares,
-    // this.activeWorkers,
+    this.activeWorkers,
   });
 
   @override
   List<Object> get props => [
-    // status,
-    minPayout,
-    reportedHashrate,
+    coinsPerMin,
+    usdPerMin,
+    btcPerMin,
     currentHashrate,
+    averageHashrate,
+    reportedHashrate,
+    validShares,
+    invalidShares,
+    staleShares,
   ];
 
   static Dashboard fromJson(dynamic json) {
     final data = json['data'];
     return Dashboard(
-      minPayout: data['settings']['minPayout'],
-      reportedHashrate: data['currentStatistics']['reportedHashrate'],
-      // currentHashrate: _data['currentStatistics']['currentHashrate'],
-      validShares: data['currentStatistics']['validShares'],
-      invalidShares: data['currentStatistics']['invalidShares'],
-      staleShares: data['currentStatistics']['staleShares'],
-      // activeWorkers: _data['currentStatistics']['activeWorkers'],
+      //
+      coinsPerMin: data['coinsPerMin'],
+      usdPerMin: data['usdPerMin'],
+      btcPerMin: data['btcPerMin'],
+      // Hashrate
+      currentHashrate: data['currentHashrate'],
+      averageHashrate: data['averageHashrate'],
+      reportedHashrate: data['reportedHashrate'],
+      // Shares
+      validShares: data['validShares'],
+      invalidShares: data['invalidShares'],
+      staleShares: data['staleShares'],
     );
   }
 }

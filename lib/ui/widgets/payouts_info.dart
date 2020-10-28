@@ -1,23 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:myethermine/ui/widgets/miner_chart.dart';
 
-class MinerWidget extends StatelessWidget {
-
-  final double currentHashrate;
-  final double averageHashrate;
-  final int reportedHashrate;
+class SharesWidget extends StatelessWidget {
+  final int validShares;
+  final int invalidShares;
+  final int staleShares;
 
   @required
-  const MinerWidget({
-    Key key,
-    this.currentHashrate,
-    this.averageHashrate,
-    this.reportedHashrate,
-  }) : super(key: key);
+  const SharesWidget(
+      {Key key, this.validShares, this.invalidShares, this.staleShares})
+      : super(key: key);
 
-
-  Widget _minerItems({String name, double hash}) {
-    var h = hash / 1000000;
+  Widget _sharesItem({String name, int shares}) {
     return Column(
       children: [
         Padding(
@@ -33,47 +26,9 @@ class MinerWidget extends StatelessWidget {
           ),
         ),
         Text(
-          h.toStringAsFixed(1),
+          '$shares',
           style: TextStyle(
             fontSize: 14,
-          ),
-        ),
-        Text('MH/s',
-          style: TextStyle(
-            fontSize: 12,
-            color: Colors.grey,
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _minerItem({String name, int hash}) {
-    var h = hash / 1000000;
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(
-            bottom: 10.0,
-          ),
-          child: Text(
-            name,
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-        Text(
-          h.toStringAsFixed(1),
-          style: TextStyle(
-            fontSize: 14,
-          ),
-        ),
-        Text('MH/s',
-          style: TextStyle(
-            fontSize: 12,
-            color: Colors.grey,
           ),
         ),
       ],
@@ -89,7 +44,7 @@ class MinerWidget extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(10.0),
           child: Text(
-            'Hashrate',
+            'Shares',
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
@@ -110,16 +65,15 @@ class MinerWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Expanded(
-                        child: _minerItems(name: 'Current', hash: currentHashrate)),
+                        child: _sharesItem(name: 'Valid', shares: validShares)),
                     Container(height: 40, child: VerticalDivider(thickness: 1.5, color: Colors.deepOrange)),
                     Expanded(
-                        child: _minerItems(name: 'Average', hash: averageHashrate)),
+                        child: _sharesItem(name: 'Stale', shares: staleShares)),
                     Container(height: 40, child: VerticalDivider(thickness: 1.5, color: Colors.deepOrange)),
                     Expanded(
-                        child: _minerItem(name: 'Reported', hash: reportedHashrate)),
+                        child: _sharesItem(name: 'Invalid', shares: invalidShares)),
                   ],
                 ),
-                MinerChart(),
               ],
             ),
           ),

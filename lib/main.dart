@@ -12,9 +12,21 @@ import 'blocs/dashboard_bloc.dart';
 class SimpleBlocObserver extends BlocObserver {
 
   @override
-  void onTransition(Bloc bloc, Transition transition) {
+  void onEvent(Bloc bloc, Object event) {
+    print('onEvent $event');
+    super.onEvent(bloc, event);
+  }
+
+  @override
+  onTransition(Bloc bloc, Transition transition) {
+    print('onTransition $transition');
     super.onTransition(bloc, transition);
-    print(transition);
+  }
+
+  @override
+  void onError(Cubit cubit, Object error, StackTrace stackTrace) {
+    print('onError $error');
+    super.onError(cubit, error, stackTrace);
   }
 }
 

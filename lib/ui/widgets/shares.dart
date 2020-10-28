@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:myethermine/ui/widgets/miner_chart.dart';
 
 class SharesWidget extends StatelessWidget {
   final int validShares;
@@ -58,18 +59,23 @@ class SharesWidget extends StatelessWidget {
           ),
           child: Padding(
             padding: const EdgeInsets.all(15.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
+            child: Column(
               children: [
-                Expanded(
-                    child: _sharesItem(name: 'Valid', shares: validShares)),
-                Container(height: 40, child: VerticalDivider(thickness: 1.5, color: Colors.deepOrange)),
-                Expanded(
-                    child: _sharesItem(name: 'Stale', shares: staleShares)),
-                Container(height: 40, child: VerticalDivider(thickness: 1.5, color: Colors.deepOrange)),
-                Expanded(
-                    child: _sharesItem(name: 'Invalid', shares: invalidShares)),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Expanded(
+                        child: _sharesItem(name: 'Valid', shares: validShares)),
+                    Container(height: 40, child: VerticalDivider(thickness: 1.5, color: Colors.deepOrange)),
+                    Expanded(
+                        child: _sharesItem(name: 'Stale', shares: staleShares)),
+                    Container(height: 40, child: VerticalDivider(thickness: 1.5, color: Colors.deepOrange)),
+                    Expanded(
+                        child: _sharesItem(name: 'Invalid', shares: invalidShares)),
+                  ],
+                ),
+                MinerChart(),
               ],
             ),
           ),

@@ -1,53 +1,101 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:myethermine/blocs/blocs.dart';
 import 'package:myethermine/ui/widgets/miner.dart';
+import 'package:myethermine/ui/widgets/per_min.dart';
 import 'package:myethermine/ui/widgets/shares.dart';
 
 class HomePage extends StatefulWidget {
   @override
-  _HomePageState createState() => _HomePageState();
+  State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
+  Completer<void> _refreshCompleter;
+
+  @override
+  void initState() {
+    super.initState();
+    _refreshCompleter = Completer<void>();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: CupertinoColors.secondarySystemBackground,
-      body: SafeArea(
-        minimum: EdgeInsets.all(10),
-        child: Center(
-          child: BlocBuilder<DashboardBloc, DashboardState>(
-            builder: (context, state) {
-              if (state is DashboardEmpty) {
-                BlocProvider.of<DashboardBloc>(context).add(DashboardFetched());
-              }
-              if (state is DashboardError) {
-                return Center(
-                  child: Text('failed to fetch quote'),
-                );
-              }
-              if (state is DashboardLoaded) {
-                final _state = state.dashboard ;
-                return ListView(
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: MinerWidget(reportedHashrate: _state.reportedHashrate, currentHashrate: _state.reportedHashrate,),
+      body: CupertinoScrollbar(
+        child: SafeArea(
+          minimum: EdgeInsets.all(10),
+          child: Center(
+            child: BlocConsumer<DashboardBloc, DashboardState>(
+              listener: (context, state) {
+                if (state is DashboardEmpty) {
+                  _refreshCompleter?.complete();
+                  _refreshCompleter = Completer();
+                }
+              },
+              builder: (context, state) {
+                if (state is DashboardEmpty) {
+                  BlocProvider.of<DashboardBloc>(context).add(DashboardRequested());
+                }
+                if (state is DashboardLoading){
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+                if (state is DashboardLoadSuccess) {
+                  final _state = state.dashboard;
+                  return RefreshIndicator(
+                    onRefresh: () {
+                      BlocProvider.of<DashboardBloc>(context).add(
+                        DashboardRefreshRequested(),
+                      );
+                      return _refreshCompleter.future;
+                    },
+                    child: ListView(
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: PerMinWidget(
+                            coinsPerMin: _state.coinsPerMin,
+                            usdPerMin: _state.usdPerMin,
+                            btcPerMin: _state.btcPerMin,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: MinerWidget(
+                            currentHashrate: _state.currentHashrate,
+                            averageHashrate: _state.averageHashrate,
+                            reportedHashrate: _state.reportedHashrate,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: SharesWidget(
+                            validShares: _state.validShares,
+                            invalidShares: _state.invalidShares,
+                            staleShares: _state.staleShares,
+                          ),
+                        ),
+                      ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: SharesWidget(validShares: _state.validShares, invalidShares: _state.invalidShares, staleShares: _state.staleShares,),
-                    )
-                  ],
+                  );
+                }
+                if (state is DashboardError) {
+                  return Center(
+                    child: Text('failed to fetch quote'),
+                  );
+                }
+                return Center(
+                  child: CircularProgressIndicator(),
                 );
-              }
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            },
+              },
+            ),
           ),
         ),
       ),

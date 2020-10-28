@@ -17,15 +17,29 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
         super(DashboardEmpty());
 
   @override
-  Stream<DashboardState> mapEventToState(DashboardEvent event,) async* {
-    if (event is DashboardFetched) {
-      yield DashboardLoading();
-      try {
-        final Dashboard dashboard = await dashboardRepository.fetchDashboard();
-        yield DashboardLoaded(dashboard: dashboard);
-      } catch (_) {
-        yield DashboardError();
-      }
+  Stream<DashboardState> mapEventToState(DashboardEvent event) async* {
+    if (event is DashboardRequested) {
+      yield* _mapDashboardRequestedToState(event);
+    } else if (event is DashboardRefreshRequested) {
+      yield* _mapDashboardRefreshRequestedToState(event);
     }
+  }
+
+  Stream<DashboardState> _mapDashboardRequestedToState(DashboardRequested event) async* {
+    yield DashboardLoading();
+    try {
+      final Dashboard dashboard = await dashboardRepository.fetchDashboard();
+      yield DashboardLoadSuccess(dashboard: dashboard);
+    } catch (_) {
+      yield DashboardError();
+    }
+  }
+
+  Stream<DashboardState> _mapDashboardRefreshRequestedToState(DashboardRefreshRequested event) async* {
+    yield DashboardLoading();
+    try {
+      final Dashboard dashboard = await dashboardRepository.fetchDashboard();
+      yield DashboardLoadSuccess(dashboard: dashboard);
+    } catch (_) {}
   }
 }

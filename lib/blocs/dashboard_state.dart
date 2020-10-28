@@ -9,12 +9,13 @@ abstract class DashboardState extends Equatable {
 }
 
 class DashboardEmpty extends DashboardState {}
+
 class DashboardLoading extends DashboardState {}
 
-class DashboardLoaded extends DashboardState {
+class DashboardLoadSuccess extends DashboardState {
   final Dashboard dashboard;
 
-  const DashboardLoaded({@required this.dashboard}): assert(dashboard != null);
+  const DashboardLoadSuccess({@required this.dashboard}): assert(dashboard != null);
 
   @override
   List<Object> get props => [dashboard];
