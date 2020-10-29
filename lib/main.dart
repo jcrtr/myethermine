@@ -1,3 +1,4 @@
+import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:bloc/bloc.dart';
@@ -39,9 +40,13 @@ void main() {
     ),
   );
 
-  runApp(App(
-    dashboardRepository: dashboardRepository,
-  ));
+  runApp(
+    DevicePreview(
+      // enabled: !kReleaseMode,
+      // toolBarStyle: DevicePreviewToolBarStyle.light(),
+      builder: (context) => App(dashboardRepository: dashboardRepository),
+    ),
+  );
 }
 
 class App extends StatelessWidget {
@@ -54,6 +59,9 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      locale: DevicePreview.of(context).locale, // <--- /!\ Add the locale
+      builder: DevicePreview.appBuilder,
+      debugShowCheckedModeBanner: false,
       title: 'MyEth',
       theme: ThemeData(
         primarySwatch: Colors.blue,

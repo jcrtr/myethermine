@@ -5,9 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:myethermine/blocs/blocs.dart';
+import 'package:myethermine/ui/widgets/background.dart';
+import 'package:myethermine/ui/widgets/cart_style.dart';
+import 'package:myethermine/ui/widgets/clipper.dart';
 import 'package:myethermine/ui/widgets/miner.dart';
 import 'package:myethermine/ui/widgets/per_min.dart';
 import 'package:myethermine/ui/widgets/shares.dart';
+import 'package:myethermine/ui/widgets/wallet.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -28,75 +32,107 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       backgroundColor: CupertinoColors.secondarySystemBackground,
       body: CupertinoScrollbar(
-        child: SafeArea(
-          minimum: EdgeInsets.all(10),
-          child: Center(
-            child: BlocConsumer<DashboardBloc, DashboardState>(
-              listener: (context, state) {
-                if (state is DashboardEmpty) {
-                  _refreshCompleter?.complete();
-                  _refreshCompleter = Completer();
-                }
-              },
-              builder: (context, state) {
-                if (state is DashboardEmpty) {
-                  BlocProvider.of<DashboardBloc>(context).add(DashboardRequested());
-                }
-                if (state is DashboardLoading){
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-                if (state is DashboardLoadSuccess) {
-                  final _state = state.dashboard;
-                  return RefreshIndicator(
-                    onRefresh: () {
-                      BlocProvider.of<DashboardBloc>(context).add(
-                        DashboardRefreshRequested(),
-                      );
-                      return _refreshCompleter.future;
-                    },
-                    child: ListView(
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: PerMinWidget(
-                            coinsPerMin: _state.coinsPerMin,
-                            usdPerMin: _state.usdPerMin,
-                            btcPerMin: _state.btcPerMin,
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: MinerWidget(
-                            currentHashrate: _state.currentHashrate,
-                            averageHashrate: _state.averageHashrate,
-                            reportedHashrate: _state.reportedHashrate,
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: SharesWidget(
-                            validShares: _state.validShares,
-                            invalidShares: _state.invalidShares,
-                            staleShares: _state.staleShares,
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                }
-                if (state is DashboardError) {
-                  return Center(
-                    child: Text('failed to fetch quote'),
-                  );
-                }
-                return Center(
-                  child: CircularProgressIndicator(),
-                );
-              },
+        child: Stack(
+          children: [
+            ClipPath(
+              clipper: CustomShapeClipper(),
+              child: Container(
+                height: 400,
+                decoration: BoxDecoration(
+                  color: Colors.orange,
+                  gradient: LinearGradient(
+                    colors: [Colors.orange, Colors.amberAccent],
+                    begin: Alignment.bottomCenter,
+                    end: Alignment(0.8, 0.6),
+                  ),
+                ),
+                child: BackgroundItemsPageStyle(),
+              ),
             ),
-          ),
+            SafeArea(
+              minimum: EdgeInsets.all(10),
+              child: Center(
+                child: BlocConsumer<DashboardBloc, DashboardState>(
+                  listener: (context, state) {
+                    if (state is DashboardEmpty) {
+                      _refreshCompleter?.complete();
+                      _refreshCompleter = Completer();
+                    }
+                  },
+                  builder: (context, state) {
+                    if (state is DashboardEmpty) {
+                      BlocProvider.of<DashboardBloc>(context)
+                          .add(DashboardRequested());
+                    }
+                    if (state is DashboardLoading) {
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                    if (state is DashboardLoadSuccess) {
+                      final _state = state.dashboard;
+                      return RefreshIndicator(
+                        onRefresh: () {
+                          BlocProvider.of<DashboardBloc>(context).add(
+                            DashboardRefreshRequested(),
+                          );
+                          return _refreshCompleter.future;
+                        },
+                        child: ListView(
+                          children: <Widget>[
+                            TitleCart(title: 'Wallet'),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: WalletWidget(
+                                // coinsPerMin: _state.coinsPerMin,
+                                // usdPerMin: _state.usdPerMin,
+                                // btcPerMin: _state.btcPerMin,
+                              ),
+                            ),
+                            TitleCart(title: 'Estimated Earnings'),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: PerMinWidget(
+                                coinsPerMin: _state.coinsPerMin,
+                                usdPerMin: _state.usdPerMin,
+                                btcPerMin: _state.btcPerMin,
+                              ),
+                            ),
+                            TitleCart(title: 'Hashrate'),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: MinerWidget(
+                                currentHashrate: _state.currentHashrate,
+                                averageHashrate: _state.averageHashrate,
+                                reportedHashrate: _state.reportedHashrate,
+                              ),
+                            ),
+                            TitleCart(title: 'Shares'),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: SharesWidget(
+                                validShares: _state.validShares,
+                                invalidShares: _state.invalidShares,
+                                staleShares: _state.staleShares,
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    }
+                    if (state is DashboardError) {
+                      return Center(
+                        child: Text('failed to fetch quote'),
+                      );
+                    }
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  },
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

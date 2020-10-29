@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:myethermine/ui/widgets/miner_chart.dart';
+
+import 'cart_style.dart';
 
 class MinerWidget extends StatelessWidget {
 
@@ -27,7 +28,7 @@ class MinerWidget extends StatelessWidget {
           child: Text(
             name,
             style: TextStyle(
-              fontSize: 16,
+              fontSize: 17,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -35,12 +36,12 @@ class MinerWidget extends StatelessWidget {
         Text(
           h.toStringAsFixed(1),
           style: TextStyle(
-            fontSize: 14,
+            fontSize: 16,
           ),
         ),
         Text('MH/s',
           style: TextStyle(
-            fontSize: 12,
+            fontSize: 14,
             color: Colors.grey,
           ),
         ),
@@ -59,7 +60,7 @@ class MinerWidget extends StatelessWidget {
           child: Text(
             name,
             style: TextStyle(
-              fontSize: 16,
+              fontSize: 17,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -67,12 +68,12 @@ class MinerWidget extends StatelessWidget {
         Text(
           h.toStringAsFixed(1),
           style: TextStyle(
-            fontSize: 14,
+            fontSize: 16,
           ),
         ),
         Text('MH/s',
           style: TextStyle(
-            fontSize: 12,
+            fontSize: 14,
             color: Colors.grey,
           ),
         ),
@@ -83,47 +84,41 @@ class MinerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Text(
-            'Hashrate',
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
         Container(
           decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.circular(15),
+            borderRadius: BorderRadius.circular(20),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey[350],
+                blurRadius: 15.0,
+                spreadRadius: 0.0,
+                offset: Offset(0.0, 0.0),
+              ),
+            ],
           ),
           child: Padding(
             padding: const EdgeInsets.all(15.0),
-            child: Column(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Expanded(
-                        child: _minerItems(name: 'Current', hash: currentHashrate)),
-                    Container(height: 40, child: VerticalDivider(thickness: 1.5, color: Colors.deepOrange)),
-                    Expanded(
-                        child: _minerItems(name: 'Average', hash: averageHashrate)),
-                    Container(height: 40, child: VerticalDivider(thickness: 1.5, color: Colors.deepOrange)),
-                    Expanded(
-                        child: _minerItem(name: 'Reported', hash: reportedHashrate)),
-                  ],
-                ),
-                MinerChart(),
+                Expanded(
+                    child: _minerItems(name: 'Current', hash: currentHashrate)),
+                Container(height: 40, child: VerticalDivider(thickness: 1.5, color: Colors.deepOrange)),
+                Expanded(
+                    child: _minerItems(name: 'Average', hash: averageHashrate)),
+                Container(height: 40, child: VerticalDivider(thickness: 1.5, color: Colors.deepOrange)),
+                Expanded(
+                    child: _minerItem(name: 'Reported', hash: reportedHashrate)),
               ],
             ),
           ),
         ),
+        ShadowBoxCart(),
       ],
     );
   }

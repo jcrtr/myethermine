@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'cart_style.dart';
+
 class PerMinWidget extends StatelessWidget {
   final double coinsPerMin;
   final double usdPerMin;
@@ -21,7 +23,7 @@ class PerMinWidget extends StatelessWidget {
             child: Text(
               title,
               style: TextStyle(
-                fontSize: 14,
+                fontSize: 16,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -30,7 +32,7 @@ class PerMinWidget extends StatelessWidget {
             child: Text(
               data.toStringAsFixed(num),
               style: TextStyle(
-                fontSize: 14,
+                fontSize: 16,
               ),
             ),
           ),
@@ -52,7 +54,7 @@ class PerMinWidget extends StatelessWidget {
           child: Text(
             name,
             style: TextStyle(
-              fontSize: 16,
+              fontSize: 17,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -69,49 +71,41 @@ class PerMinWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Text(
-            'Shares',
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
         Container(
           decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.circular(15),
+            borderRadius: BorderRadius.circular(20),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey[350],
+                blurRadius: 15.0,
+                spreadRadius: 0.0,
+                offset: Offset(0.0, 0.0),
+              ),
+            ],
           ),
           child: Padding(
             padding: const EdgeInsets.all(15.0),
-            child: Column(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Expanded(
-                        child: _petminItem(name: 'ETH', permin: coinsPerMin, num: 5)),
-                    Container(
-                        height: 100,
-                        child: VerticalDivider(
-                            thickness: 1.5, color: Colors.deepOrange)),
-                    Expanded(
-                        child: _petminItem(name: 'USD', permin: usdPerMin, num: 2)),
-                    // Container(height: 40, child: VerticalDivider(thickness: 1.5, color: Colors.deepOrange)),
-                    // Expanded(
-                    //     child: _petminItem(name: 'BTC', permin: btcPerMin)),
-                  ],
-                ),
+                Expanded(
+                    child: _petminItem(name: 'ETH', permin: coinsPerMin, num: 5)),
+                Container(
+                    height: 110,
+                    child: VerticalDivider(
+                        thickness: 1.5, color: Colors.deepOrange)),
+                Expanded(
+                    child: _petminItem(name: 'USD', permin: usdPerMin, num: 2)),
               ],
             ),
           ),
         ),
+        ShadowBoxCart(),
       ],
     );
   }

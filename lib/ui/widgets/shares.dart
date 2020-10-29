@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:myethermine/ui/widgets/miner_chart.dart';
+import 'package:myethermine/ui/widgets/cart_style.dart';
 
 class SharesWidget extends StatelessWidget {
   final int validShares;
@@ -21,7 +22,7 @@ class SharesWidget extends StatelessWidget {
           child: Text(
             name,
             style: TextStyle(
-              fontSize: 16,
+              fontSize: 17,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -29,7 +30,7 @@ class SharesWidget extends StatelessWidget {
         Text(
           '$shares',
           style: TextStyle(
-            fontSize: 14,
+            fontSize: 16,
           ),
         ),
       ],
@@ -39,47 +40,41 @@ class SharesWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
+      // mainAxisAlignment: MainAxisAlignment.center,
+      // crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Text(
-            'Shares',
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
         Container(
           decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.circular(15),
+            borderRadius: BorderRadius.circular(20),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey[350],
+                blurRadius: 15.0,
+                spreadRadius: 0.0,
+                offset: Offset(0.0, 0.0),
+              ),
+            ],
           ),
           child: Padding(
             padding: const EdgeInsets.all(15.0),
-            child: Column(
+            child: Row(
+              // mainAxisAlignment: MainAxisAlignment.center,
+              // crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Expanded(
-                        child: _sharesItem(name: 'Valid', shares: validShares)),
-                    Container(height: 40, child: VerticalDivider(thickness: 1.5, color: Colors.deepOrange)),
-                    Expanded(
-                        child: _sharesItem(name: 'Stale', shares: staleShares)),
-                    Container(height: 40, child: VerticalDivider(thickness: 1.5, color: Colors.deepOrange)),
-                    Expanded(
-                        child: _sharesItem(name: 'Invalid', shares: invalidShares)),
-                  ],
-                ),
-                MinerChart(),
+                Expanded(
+                    child: _sharesItem(name: 'Valid', shares: validShares)),
+                Container(height: 40, child: VerticalDivider(thickness: 1.5, color: Colors.deepOrange)),
+                Expanded(
+                    child: _sharesItem(name: 'Stale', shares: staleShares)),
+                Container(height: 40, child: VerticalDivider(thickness: 1.5, color: Colors.deepOrange)),
+                Expanded(
+                    child: _sharesItem(name: 'Invalid', shares: invalidShares)),
               ],
             ),
           ),
         ),
+        ShadowBoxCart(),
       ],
     );
   }

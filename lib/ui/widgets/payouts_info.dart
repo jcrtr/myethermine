@@ -10,7 +10,7 @@ class SharesWidget extends StatelessWidget {
       {Key key, this.validShares, this.invalidShares, this.staleShares})
       : super(key: key);
 
-  Widget _sharesItem({String name, int shares}) {
+  Widget _item({String name, int shares}) {
     return Column(
       children: [
         Padding(
@@ -65,13 +65,13 @@ class SharesWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Expanded(
-                        child: _sharesItem(name: 'Valid', shares: validShares)),
+                        child: _item(name: 'Valid', shares: validShares)),
                     Container(height: 40, child: VerticalDivider(thickness: 1.5, color: Colors.deepOrange)),
                     Expanded(
-                        child: _sharesItem(name: 'Stale', shares: staleShares)),
+                        child: _item(name: 'Stale', shares: staleShares)),
                     Container(height: 40, child: VerticalDivider(thickness: 1.5, color: Colors.deepOrange)),
                     Expanded(
-                        child: _sharesItem(name: 'Invalid', shares: invalidShares)),
+                        child: _item(name: 'Invalid', shares: invalidShares)),
                   ],
                 ),
               ],
