@@ -12,6 +12,6 @@ class EthAmountFormatter {
 
     return EtherAmount.fromUnitAndValue(fromUnit, amount)
         .getValueInUnit(toUnit)
-        .toString();
+        .toStringAsFixed(7);
   }
 }

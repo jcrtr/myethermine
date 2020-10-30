@@ -1,17 +1,23 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:myethermine/utils/eth_address_formatter.dart';
+import 'package:myethermine/utils/eth_balance_format.dart';
 
 import 'cart_style.dart';
 
 class WalletWidget extends StatelessWidget {
+  final String address = '0x460a6deec1d52c9c397e92fdc8c4bc05d10f8429';
+
+  // WalletWidget({this.address});
+
   Widget _item() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         Text(
-          '0x460a6deec...8c4bc05d10f8429',
+          "${address.substring(0, 6)}...${address.substring(address.length - 6, address.length)}",
           style: TextStyle(
             fontSize: 17,
             color: Colors.grey,
@@ -22,20 +28,10 @@ class WalletWidget extends StatelessWidget {
           child: Row(
             children: [
               Text(
-                '0.23523',
+                "${EthAmountFormatter(26622309600713840).format()} ETH",
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 10.0),
-                child: Text(
-                  'ETH',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
                 ),
               ),
             ],
