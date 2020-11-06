@@ -12,7 +12,7 @@ class DashboardApiClient {
   }) : assert(httpClient != null);
 
   Future<Dashboard> fetchDashboard() async {
-    final ethUrl = '$_baseUrl/miner/710046eCa590620f87e7946993B8E8BC7eb4b222/currentStats';
+    final ethUrl = '$_baseUrl/miner/0x460a6deec1d52c9c397e92fdc8c4bc05d10f8429/currentStats';
     final ethResponse = await this.httpClient.get(ethUrl);
     if (ethResponse.statusCode != 200) {
       throw Exception('error getting locationId for city');

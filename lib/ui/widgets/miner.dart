@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-
 import 'cart_style.dart';
+
 
 class MinerWidget extends StatelessWidget {
 

@@ -11,6 +11,7 @@ class Dashboard extends Equatable {
   final int invalidShares;
   final int staleShares;
   final int activeWorkers;
+  final int unpaid;
 
   Dashboard({
     // this.status,
@@ -24,6 +25,7 @@ class Dashboard extends Equatable {
     this.invalidShares,
     this.staleShares,
     this.activeWorkers,
+    this.unpaid,
   });
 
   @override
@@ -37,11 +39,16 @@ class Dashboard extends Equatable {
     validShares,
     invalidShares,
     staleShares,
+    activeWorkers,
+    unpaid
   ];
 
   static Dashboard fromJson(dynamic json) {
     final data = json['data'];
     return Dashboard(
+      // Payments
+      activeWorkers: data['activeWorkers'],
+      unpaid: data['unpaid'],
       //
       coinsPerMin: data['coinsPerMin'],
       usdPerMin: data['usdPerMin'],

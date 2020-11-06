@@ -1,35 +1,17 @@
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:myethermine/ui/screens/IntroPage.dart';
+
+import 'package:myethermine/ui/screens/SplashPage.dart';
+import 'package:myethermine/utils/bloc_observer.dart';
 
 import 'repositories/repositories.dart';
 import 'ui/screens/HomePage.dart';
 import 'blocs/dashboard_bloc.dart';
-
-
-class SimpleBlocObserver extends BlocObserver {
-
-  @override
-  void onEvent(Bloc bloc, Object event) {
-    print('onEvent $event');
-    super.onEvent(bloc, event);
-  }
-
-  @override
-  onTransition(Bloc bloc, Transition transition) {
-    print('onTransition $transition');
-    super.onTransition(bloc, transition);
-  }
-
-  @override
-  void onError(Cubit cubit, Object error, StackTrace stackTrace) {
-    print('onError $error');
-    super.onError(cubit, error, stackTrace);
-  }
-}
 
 void main() {
   Bloc.observer = SimpleBlocObserver();
@@ -67,11 +49,21 @@ class App extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: BlocProvider(
-        create: (context) =>
-            DashboardBloc(dashboardRepository: dashboardRepository),
-        child: HomePage(),
-      ),
+      // home: BlocProvider(
+      //   create: (context) =>
+      //       DashboardBloc(dashboardRepository: dashboardRepository),
+      //   child: HomePage(),
+      // ),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => SplashPage(),
+        '/home': (context) => BlocProvider(
+          create: (context) =>
+              DashboardBloc(dashboardRepository: dashboardRepository),
+          child: HomePage(),
+        ),
+        '/intro': (context) => IntroPage(),
+      },
     );
   }
 }

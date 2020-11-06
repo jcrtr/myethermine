@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:myethermine/utils/eth_balance_format.dart';
 
-class SharesWidget extends StatelessWidget {
-  final int validShares;
-  final int invalidShares;
-  final int staleShares;
+import 'cart_style.dart';
+
+class PayoutWidget extends StatelessWidget {
+  final int activeWorkers;
+  final int unpaid;
 
   @required
-  const SharesWidget(
-      {Key key, this.validShares, this.invalidShares, this.staleShares})
+  const PayoutWidget({Key key, this.activeWorkers, this.unpaid})
       : super(key: key);
 
-  Widget _item({String name, int shares}) {
+  Widget _itemWorkers({String title, int data}) {
     return Column(
       children: [
         Padding(
@@ -18,17 +19,46 @@ class SharesWidget extends StatelessWidget {
             bottom: 10.0,
           ),
           child: Text(
-            name,
+            title,
             style: TextStyle(
-              fontSize: 16,
+              fontSize: 17,
               fontWeight: FontWeight.bold,
             ),
           ),
         ),
         Text(
-          '$shares',
+          '$data',
           style: TextStyle(
-            fontSize: 14,
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: Colors.green,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _itemEth({String title, int data}) {
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(
+            bottom: 10.0,
+          ),
+          child: Text(
+            title,
+            style: TextStyle(
+              fontSize: 17,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        Text(
+          '${EthAmountFormatter(data).format()}',
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: Colors.green,
           ),
         ),
       ],
@@ -38,46 +68,38 @@ class SharesWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
+      // mainAxisAlignment: MainAxisAlignment.center,
+      // crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Text(
-            'Shares',
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
         Container(
           decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.circular(15),
+            borderRadius: BorderRadius.circular(20),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey[350],
+                blurRadius: 15.0,
+                spreadRadius: 0.0,
+                offset: Offset(0.0, 0.0),
+              ),
+            ],
           ),
           child: Padding(
             padding: const EdgeInsets.all(15.0),
-            child: Column(
+            child: Row(
+              // mainAxisAlignment: MainAxisAlignment.center,
+              // crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Expanded(
-                        child: _item(name: 'Valid', shares: validShares)),
-                    Container(height: 40, child: VerticalDivider(thickness: 1.5, color: Colors.deepOrange)),
-                    Expanded(
-                        child: _item(name: 'Stale', shares: staleShares)),
-                    Container(height: 40, child: VerticalDivider(thickness: 1.5, color: Colors.deepOrange)),
-                    Expanded(
-                        child: _item(name: 'Invalid', shares: invalidShares)),
-                  ],
-                ),
+                Expanded(
+                    child: _itemWorkers(title: 'Active Miner', data: activeWorkers)),
+                Container(height: 40, child: VerticalDivider(thickness: 1.5, color: Colors.deepOrange)),
+                Expanded(
+                    child: _itemEth(title: 'Unpaid', data: unpaid)),
               ],
             ),
           ),
         ),
+        ShadowBoxCart(),
       ],
     );
   }

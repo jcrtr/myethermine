@@ -65,7 +65,7 @@ class WalletWidget extends StatelessWidget {
               padding: const EdgeInsets.only(
                 top: 20,
                 bottom: 20,
-                left: 30.0,
+                left: 40.0,
               ),
               child: SvgPicture.asset(
                 'assets/img/ethereum-logo.svg',

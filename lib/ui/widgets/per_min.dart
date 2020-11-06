@@ -12,64 +12,46 @@ class PerMinWidget extends StatelessWidget {
       {Key key, this.coinsPerMin, this.usdPerMin, this.btcPerMin})
       : super(key: key);
 
-  Widget _item({String title, double data, int num}) {
+  Widget _itemDate({String title}) {
     return Padding(
       padding: const EdgeInsets.only(
-        left: 10.0,
+        bottom: 8,
       ),
-      child: Row(
-        children: [
-          Expanded(
-            child: Text(
-              title,
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-          Expanded(
-            child: Text(
-              data.toStringAsFixed(num),
-              style: TextStyle(
-                fontSize: 16,
-              ),
-            ),
-          ),
-        ],
+      child: Text(
+        title,
+        style: TextStyle(
+          fontSize: 17,
+          fontWeight: FontWeight.bold,
+        ),
       ),
     );
   }
 
-  Widget _petminItem({String name, double permin, int num}) {
-    var h = permin * 60;
-    var d = permin * 1440;
-    var m = d * 30;
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(
-            bottom: 10.0,
-          ),
-          child: Text(
-            name,
-            style: TextStyle(
-              fontSize: 17,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
+  Widget _petMinItem({double data, int num}) {
+    return Padding(
+      padding: const EdgeInsets.only(
+        bottom: 8,
+      ),
+      child: Text(
+        data.toStringAsFixed(num),
+        style: TextStyle(
+          fontSize: 16,
         ),
-        _item(title: 'hour', data: h, num: num),
-        Divider(),
-        _item(title: 'day', data: d, num: num),
-        Divider(),
-        _item(title: 'month', data: m, num: num),
-      ],
+      ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    
+    var ethH = coinsPerMin * 60;
+    var ethD = ethH * 24;
+    var ethM = ethD * 30;
+    
+    var usdH = usdPerMin * 60;
+    var usdD = usdH * 24;
+    var usdM = usdD * 30;
+    
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -94,13 +76,50 @@ class PerMinWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Expanded(
-                    child: _petminItem(name: 'ETH', permin: coinsPerMin, num: 5)),
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                      right: 20,
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        _itemDate(title: ''),
+                        _itemDate(title: 'hour'),
+                        _itemDate(title: 'day'),
+                        _itemDate(title: 'month'),
+                      ],
+                    ),
+                  ),
+                ),
                 Container(
-                    height: 110,
+                    height: 90,
                     child: VerticalDivider(
                         thickness: 1.5, color: Colors.deepOrange)),
                 Expanded(
-                    child: _petminItem(name: 'USD', permin: usdPerMin, num: 2)),
+                  child: Column(
+                    children: [
+                      _itemDate(title: 'ETH'),
+                      _petMinItem(data: ethH, num: 5),
+                      _petMinItem(data: ethD, num: 5),
+                      _petMinItem(data: ethM, num: 5),
+                    ],
+                  ),
+                ),
+                Container(
+                    height: 90,
+                    child: VerticalDivider(
+                        thickness: 1.5, color: Colors.deepOrange)),
+                Expanded(
+                  child: Column(
+                    children: [
+                      _itemDate(title: 'USD'),
+                      _petMinItem(data: usdH, num: 2),
+                      _petMinItem(data: usdD, num: 2),
+                      _petMinItem(data: usdM, num: 2),
+                    ],
+                  ),
+                ),
               ],
             ),
           ),
