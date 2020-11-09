@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:myethermine/ui/widgets/miner_chart.dart';
-import 'package:myethermine/ui/widgets/cart_style.dart';
+import 'package:myethermine/ui/widgets/style/cart_style.dart';
 
 class SharesWidget extends StatelessWidget {
   final int validShares;
@@ -11,31 +10,6 @@ class SharesWidget extends StatelessWidget {
   const SharesWidget(
       {Key key, this.validShares, this.invalidShares, this.staleShares})
       : super(key: key);
-
-  Widget _sharesItem({String title, int shares}) {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(
-            bottom: 10.0,
-          ),
-          child: Text(
-            title,
-            style: TextStyle(
-              fontSize: 17,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-        Text(
-          '$shares',
-          style: TextStyle(
-            fontSize: 16,
-          ),
-        ),
-      ],
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,18 +37,58 @@ class SharesWidget extends StatelessWidget {
               // crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Expanded(
-                    child: _sharesItem(title: 'Valid', shares: validShares)),
-                Container(height: 40, child: VerticalDivider(thickness: 1.5, color: Colors.deepOrange)),
+                    child: _SharesItem(title: 'Valid', shares: validShares)),
+                Container(
+                    height: 40,
+                    child: VerticalDivider(
+                        thickness: 1.5, color: Colors.deepOrange)),
                 Expanded(
-                    child: _sharesItem(title: 'Stale', shares: staleShares)),
-                Container(height: 40, child: VerticalDivider(thickness: 1.5, color: Colors.deepOrange)),
+                    child: _SharesItem(title: 'Stale', shares: staleShares)),
+                Container(
+                    height: 40,
+                    child: VerticalDivider(
+                        thickness: 1.5, color: Colors.deepOrange)),
                 Expanded(
-                    child: _sharesItem(title: 'Invalid', shares: invalidShares)),
+                    child: _SharesItem(title: 'Invalid', shares: invalidShares)),
               ],
             ),
           ),
         ),
         ShadowBoxCart(),
+      ],
+    );
+  }
+}
+
+class _SharesItem extends StatelessWidget {
+
+  final String title;
+  final int shares;
+
+  const _SharesItem({Key key, this.title, this.shares}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(
+            bottom: 10.0,
+          ),
+          child: Text(
+            title,
+            style: TextStyle(
+              fontSize: 17,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        Text(
+          '$shares',
+          style: TextStyle(
+            fontSize: 16,
+          ),
+        ),
       ],
     );
   }

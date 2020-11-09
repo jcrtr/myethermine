@@ -1,6 +1,8 @@
 import 'package:equatable/equatable.dart';
 
 class Dashboard extends Equatable {
+  final String status;
+  final String error;
   final double coinsPerMin;
   final double usdPerMin;
   final double btcPerMin;
@@ -14,6 +16,8 @@ class Dashboard extends Equatable {
   final int unpaid;
 
   Dashboard({
+    this.status,
+    this.error,
     // this.status,
     this.coinsPerMin,
     this.usdPerMin,
@@ -30,6 +34,9 @@ class Dashboard extends Equatable {
 
   @override
   List<Object> get props => [
+    status,
+    error,
+
     coinsPerMin,
     usdPerMin,
     btcPerMin,
@@ -46,6 +53,9 @@ class Dashboard extends Equatable {
   static Dashboard fromJson(dynamic json) {
     final data = json['data'];
     return Dashboard(
+      // Status
+      status: json['status'],
+      error: json['error'],
       // Payments
       activeWorkers: data['activeWorkers'],
       unpaid: data['unpaid'],

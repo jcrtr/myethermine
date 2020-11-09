@@ -31,7 +31,8 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       final Dashboard dashboard = await dashboardRepository.fetchDashboard();
       yield DashboardLoadSuccess(dashboard: dashboard);
     } catch (_) {
-      yield DashboardError();
+      final ErrorMes error = await dashboardRepository.fetchDashboardError();
+      yield DashboardError(error: error);
     }
   }
 

@@ -10,40 +10,58 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage> {
+  String _version = 'v 0.9';
+
   Future checkFirstSeen() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     // await prefs.clear();
     bool _seen = (prefs.getBool('seen') ?? false);
 
     if (_seen) {
-      Navigator.pushNamed(context, '/home');
+      Navigator.pushReplacementNamed(context, '/home');
     } else {
       prefs.setBool('seen', true);
-      Navigator.pushNamed(context, '/intro');
+      Navigator.pushReplacementNamed(context, '/intro');
     }
+  }
+
+  startTime() async {
+    var _duration = new Duration(seconds: 2);
+    return new Timer(_duration, checkFirstSeen);
   }
 
   @override
   void initState() {
     super.initState();
-    Timer(Duration(milliseconds: 3000), () {
-      checkFirstSeen();
-    });
+    startTime();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromRGBO(25,1,65,1),
-      body: Container(
-        child: Center(
-          child: SvgPicture.asset(
-            'assets/img/ethereum-logo.svg',
-            alignment: Alignment.centerRight,
-            height: 130,
-          ),
+      backgroundColor: Color.fromRGBO(25, 1, 65, 1),
+      body: Stack(fit: StackFit.expand, children: [
+        Column(
+          children: [
+            Expanded(
+              flex: 7,
+              child: Center(
+                child: Image.asset(
+                  'assets/img/logo-ethereum.png',
+                  alignment: Alignment.centerRight,
+                  height: 150,
+                ),
+              ),
+            ),
+            Expanded(
+              child: Text(
+                _version,
+                style: TextStyle(color: Colors.grey),
+              ),
+            ),
+          ],
         ),
-      ),
+      ]),
     );
   }
 }

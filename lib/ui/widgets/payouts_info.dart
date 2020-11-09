@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:myethermine/utils/eth_balance_format.dart';
 
-import 'cart_style.dart';
+import 'style/cart_style.dart';
 
 class PayoutWidget extends StatelessWidget {
   final int activeWorkers;

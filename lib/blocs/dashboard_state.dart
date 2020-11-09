@@ -21,4 +21,10 @@ class DashboardLoadSuccess extends DashboardState {
   List<Object> get props => [dashboard];
 }
 
-class DashboardError extends DashboardState {}
+class DashboardError extends DashboardState {
+  final ErrorMes error;
+
+  const DashboardError({@required this.error}): assert(error != null);
+  @override
+  List<Object> get props => [error];
+}
