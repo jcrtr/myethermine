@@ -9,8 +9,10 @@ class SplashPage extends StatefulWidget {
   _SplashPageState createState() => _SplashPageState();
 }
 
-class _SplashPageState extends State<SplashPage> {
+class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateMixin{
   String _version = 'v 0.9';
+  AnimationController animationController;
+  Animation animation;
 
   Future checkFirstSeen() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -26,7 +28,7 @@ class _SplashPageState extends State<SplashPage> {
   }
 
   startTime() async {
-    var _duration = new Duration(seconds: 2);
+    var _duration = new Duration(seconds: 20);
     return new Timer(_duration, checkFirstSeen);
   }
 
@@ -34,8 +36,24 @@ class _SplashPageState extends State<SplashPage> {
   void initState() {
     super.initState();
     startTime();
+
+    animationController = AnimationController(
+      duration: Duration(seconds: 1),
+      vsync: this,
+    );
+    animation = Tween(begin: 120.0, end: 150.0).animate(animationController);
+    animationController.addStatusListener(animationStatusListener);
+    animationController.forward();
   }
 
+  void animationStatusListener(AnimationStatus status) {
+    if (status == AnimationStatus.completed){
+      animationController.reverse();
+    } else if (status == AnimationStatus.dismissed) {
+      animationController.forward();
+    }
+  }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,13 +61,26 @@ class _SplashPageState extends State<SplashPage> {
       body: Stack(fit: StackFit.expand, children: [
         Column(
           children: [
+            Expanded(flex: 4, child: AnimatedBuilder(
+              animation: animationController,
+              builder: (BuildContext context, Widget child){
+                final size = animation.value;
+                return Center(
+                  child: Image.asset(
+                    'assets/img/logo-ethereum.png',
+                    alignment: Alignment.centerRight,
+                    height: size,
+                  ),
+                );
+              },
+            )),
             Expanded(
-              flex: 7,
-              child: Center(
-                child: Image.asset(
-                  'assets/img/logo-ethereum.png',
-                  alignment: Alignment.centerRight,
-                  height: 150,
+              flex: 2,
+              child: Text(
+                'MyEthMiner',
+                style: TextStyle(
+                  color: Colors.grey,
+                  fontSize: 30,
                 ),
               ),
             ),
