@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 
-class IntroPage extends StatefulWidget {
+class IntroScreen extends StatefulWidget {
   @override
-  _IntroPageState createState() => _IntroPageState();
+  _IntroScreenState createState() => _IntroScreenState();
 }
 
-class _IntroPageState extends State<IntroPage> {
+class _IntroScreenState extends State<IntroScreen> {
 
   List<PageViewModel> getPages() {
     return [

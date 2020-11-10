@@ -8,6 +8,10 @@ import 'style/cart_style.dart';
 class WalletWidget extends StatelessWidget {
 
   final String address = '0x460a6deec1d52c9c397e92fdc8c4bc05d10f8429';
+  final String balance;
+
+  @required
+  const WalletWidget({Key key, this.balance}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +51,7 @@ class WalletWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  _WalletItem(address: address),
+                  _WalletItem(address: address, balance: balance),
                 ],
               ),
             ),
@@ -62,10 +66,13 @@ class WalletWidget extends StatelessWidget {
 class _WalletItem extends StatelessWidget {
 
   final String address;
-  const _WalletItem({Key key, this.address}) : super(key: key);
+  final String balance;
+
+  const _WalletItem({Key key, this.address, this.balance}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    var balanceItem = int.parse(balance);
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
       crossAxisAlignment: CrossAxisAlignment.end,
@@ -82,7 +89,8 @@ class _WalletItem extends StatelessWidget {
           child: Row(
             children: [
               Text(
-                "${EthAmountFormatter(26622309600713840).format()} ETH",
+                "${EthAmountFormatter(balanceItem).format()} ETH",
+                // balance,
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,

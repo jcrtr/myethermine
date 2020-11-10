@@ -1,15 +1,17 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:myethermine/ui/widgets/style/background.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class SplashPage extends StatefulWidget {
+class SplashScreen extends StatefulWidget {
   @override
-  _SplashPageState createState() => _SplashPageState();
+  _SplashScreenState createState() => _SplashScreenState();
 }
 
-class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateMixin{
+class _SplashScreenState extends State<SplashScreen>
+    with SingleTickerProviderStateMixin {
+
   String _version = 'v 0.9';
   AnimationController animationController;
   Animation animation;
@@ -28,7 +30,7 @@ class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateM
   }
 
   startTime() async {
-    var _duration = new Duration(seconds: 20);
+    var _duration = new Duration(seconds: 2);
     return new Timer(_duration, checkFirstSeen);
   }
 
@@ -46,48 +48,62 @@ class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateM
     animationController.forward();
   }
 
+  @override
+  dispose() {
+    animationController.dispose(); // you need this
+    super.dispose();
+  }
+
   void animationStatusListener(AnimationStatus status) {
-    if (status == AnimationStatus.completed){
+    if (status == AnimationStatus.completed) {
       animationController.reverse();
     } else if (status == AnimationStatus.dismissed) {
       animationController.forward();
     }
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color.fromRGBO(25, 1, 65, 1),
       body: Stack(fit: StackFit.expand, children: [
+        BackgroundItemsPageStyle(),
         Column(
           children: [
-            Expanded(flex: 4, child: AnimatedBuilder(
-              animation: animationController,
-              builder: (BuildContext context, Widget child){
-                final size = animation.value;
-                return Center(
-                  child: Image.asset(
-                    'assets/img/logo-ethereum.png',
-                    alignment: Alignment.centerRight,
-                    height: size,
-                  ),
-                );
-              },
-            )),
             Expanded(
-              flex: 2,
+              flex: 7,
+              child: AnimatedBuilder(
+                animation: animationController,
+                builder: (BuildContext context, Widget child) {
+                  final size = animation.value;
+                  return Center(
+                    child: Image.asset(
+                      'assets/img/logo-ethereum.png',
+                      alignment: Alignment.centerRight,
+                      height: size,
+                    ),
+                  );
+                },
+              ),
+            ),
+            Expanded(
               child: Text(
                 'MyEthMiner',
                 style: TextStyle(
-                  color: Colors.grey,
+                  color: Colors.white,
                   fontSize: 30,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
             ),
             Expanded(
               child: Text(
                 _version,
-                style: TextStyle(color: Colors.grey),
+                style: TextStyle(
+                  color: Colors.grey,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
           ],

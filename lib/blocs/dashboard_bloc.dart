@@ -12,7 +12,8 @@ part 'dashboard_state.dart';
 class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
   final DashboardRepository dashboardRepository;
 
-  DashboardBloc({@required this.dashboardRepository})
+  @required
+  DashboardBloc({this.dashboardRepository})
       : assert(dashboardRepository != null),
         super(DashboardEmpty());
 
@@ -25,22 +26,28 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
     }
   }
 
-  Stream<DashboardState> _mapDashboardRequestedToState(DashboardRequested event) async* {
+  Stream<DashboardState> _mapDashboardRequestedToState(
+      DashboardRequested event) async* {
     yield DashboardLoading();
     try {
       final Dashboard dashboard = await dashboardRepository.fetchDashboard();
-      yield DashboardLoadSuccess(dashboard: dashboard);
+      yield DashboardLoadSuccess(
+        dashboard: dashboard,
+      );
     } catch (_) {
       final ErrorMes error = await dashboardRepository.fetchDashboardError();
       yield DashboardError(error: error);
     }
   }
 
-  Stream<DashboardState> _mapDashboardRefreshRequestedToState(DashboardRefreshRequested event) async* {
+  Stream<DashboardState> _mapDashboardRefreshRequestedToState(
+      DashboardRefreshRequested event) async* {
     yield DashboardLoading();
     try {
       final Dashboard dashboard = await dashboardRepository.fetchDashboard();
-      yield DashboardLoadSuccess(dashboard: dashboard);
+      yield DashboardLoadSuccess(
+        dashboard: dashboard,
+      );
     } catch (_) {}
   }
 }

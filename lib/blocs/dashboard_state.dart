@@ -1,6 +1,5 @@
 part of 'dashboard_bloc.dart';
 
-
 abstract class DashboardState extends Equatable {
   const DashboardState();
 
@@ -15,7 +14,8 @@ class DashboardLoading extends DashboardState {}
 class DashboardLoadSuccess extends DashboardState {
   final Dashboard dashboard;
 
-  const DashboardLoadSuccess({@required this.dashboard}): assert(dashboard != null);
+  @required
+  const DashboardLoadSuccess({this.dashboard}) : assert(dashboard != null);
 
   @override
   List<Object> get props => [dashboard];
@@ -24,7 +24,9 @@ class DashboardLoadSuccess extends DashboardState {
 class DashboardError extends DashboardState {
   final ErrorMes error;
 
-  const DashboardError({@required this.error}): assert(error != null);
+  @required
+  const DashboardError({this.error}) : assert(error != null);
+
   @override
   List<Object> get props => [error];
 }

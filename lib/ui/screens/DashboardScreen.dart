@@ -1,9 +1,10 @@
 import 'dart:async';
+import 'package:awesome_loader/awesome_loader.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'package:myethermine/blocs/blocs.dart';
+
 import 'package:myethermine/ui/widgets/miner.dart';
 import 'package:myethermine/ui/widgets/payouts_info.dart';
 import 'package:myethermine/ui/widgets/per_min.dart';
@@ -13,14 +14,14 @@ import 'package:myethermine/ui/widgets/style/cart_style.dart';
 import 'package:myethermine/ui/widgets/style/clipper.dart';
 import 'package:myethermine/ui/widgets/wallet.dart';
 
-
-class DashboardPage extends StatefulWidget {
+class DashboardScreen extends StatefulWidget {
   @override
-  _DashboardPageState createState() => _DashboardPageState();
+  _DashboardScreenState createState() => _DashboardScreenState();
 }
 
-class _DashboardPageState extends State<DashboardPage> {
+class _DashboardScreenState extends State<DashboardScreen> {
   Completer<void> _refreshCompleter;
+  bool _isDark;
 
   @override
   void initState() {
@@ -30,61 +31,39 @@ class _DashboardPageState extends State<DashboardPage> {
 
   @override
   Widget build(BuildContext context) {
+    var _darkMode = MediaQuery.of(context).platformBrightness;
+    if (_darkMode == Brightness.dark){
+      _isDark = true;
+      print(_darkMode);
+    } else {
+      _isDark = false;
+      print(_darkMode);
+    }
     return CupertinoScrollbar(
       child: Stack(
         children: [
-          ClipPath(
-            clipper: CustomShapeClipper(),
-            child: Container(
-              height: 420,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    Colors.orange[300],
-                    Colors.amberAccent[100]
-                  ],
-                  begin: Alignment.bottomCenter,
-                  end: Alignment(0.8, 0.6),
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.amberAccent,
-                    blurRadius: 15.0,
-                    spreadRadius: 0.0,
-                    offset: Offset(0.0, 0.0),
+          if (_isDark == false) {
+            ClipPath(
+              clipper: CustomShapeClipper(),
+              child: Container(
+                height: MediaQuery.of(context).size.height / 2,
+                decoration: BoxDecoration(
+                  // color: Color.fromRGBO(25, 1, 65, 1),
+                  gradient: LinearGradient(
+                    colors: [
+                      Colors.orange,
+                      Colors.amberAccent,
+                    ],
+                    begin: Alignment.bottomCenter,
+                    end: Alignment(0.8, 0.6),
                   ),
-                ],
-              ),
-              child: BackgroundItemsPageStyle(),
-            ),
-          ),
-          ClipPath(
-            clipper: CustomShapeClipper(),
-            child: Container(
-              height: 400,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    Colors.orange,
-                    Colors.amberAccent
-                  ],
-                  begin: Alignment.bottomCenter,
-                  end: Alignment(0.8, 0.6),
                 ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.amberAccent,
-                    blurRadius: 15.0,
-                    spreadRadius: 0.0,
-                    offset: Offset(0.0, 0.0),
-                  ),
-                ],
+                child: BackgroundItemsPageStyle(),
               ),
-              child: BackgroundItemsPageStyle(),
             ),
-          ),
+          } else {},
           SafeArea(
-            minimum: EdgeInsets.only(
+            minimum: const EdgeInsets.only(
               left: 10,
               right: 10,
             ),
@@ -103,17 +82,14 @@ class _DashboardPageState extends State<DashboardPage> {
                 }
                 if (state is DashboardLoading) {
                   return Center(
-                    child: CircularProgressIndicator(),
+                    child: AwesomeLoader(
+                      loaderType: AwesomeLoader.AwesomeLoader4,
+                      color: Colors.blue,
+                    ),
                   );
                 }
                 if (state is DashboardLoadSuccess) {
                   final _state = state.dashboard;
-                  bool _seen = ( _state.status == 'OK');
-                  if (_seen) {
-                    print('OK');
-                  } else {
-                    print(_state.error);
-                  }
                   return RefreshIndicator(
                     color: Colors.amberAccent,
                     onRefresh: () {
@@ -125,13 +101,42 @@ class _DashboardPageState extends State<DashboardPage> {
                     child: ListView(
                       children: <Widget>[
                         TitleCart(title: 'Wallet Balance'),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: WalletWidget(
-                            // coinsPerMin: _state.coinsPerMin,
-                            // usdPerMin: _state.usdPerMin,
-                            // btcPerMin: _state.btcPerMin,
-                          ),
+                        BlocConsumer<DashboardEthBloc, DashboardEthState>(
+                          listener: (context, state) {},
+                          builder: (context, state) {
+                            if (state is DashboardEthEmpty) {
+                              BlocProvider.of<DashboardEthBloc>(context)
+                                  .add(DashboardEthRequested());
+                            }
+                            if (state is DashboardEthLoading) {
+                              return Center(
+                                child: AwesomeLoader(
+                                  loaderType: AwesomeLoader.AwesomeLoader4,
+                                  color: Colors.blue,
+                                ),
+                              );
+                            }
+                            if (state is DashboardEthLoadSuccess) {
+                              return Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: WalletWidget(
+                                  balance: state.balance.result,
+                                ),
+                              );
+                            }
+                            if (state is DashboardEthError) {
+                              // final _state = state.error;
+                              return Center(
+                                child: Text('error'),
+                              );
+                            }
+                            return Center(
+                              child: AwesomeLoader(
+                                loaderType: AwesomeLoader.AwesomeLoader4,
+                                color: Colors.blue,
+                              ),
+                            );
+                          },
                         ),
                         TitleCart(title: 'Pool Balance'),
                         Padding(
@@ -173,13 +178,16 @@ class _DashboardPageState extends State<DashboardPage> {
                   );
                 }
                 if (state is DashboardError) {
-                  final _state = state.error;
+                  // final _state = state.error;
                   return Center(
-                    child: Text(_state.error),
+                    child: Text('_state.error'),
                   );
                 }
                 return Center(
-                  child: CircularProgressIndicator(),
+                  child: AwesomeLoader(
+                    loaderType: AwesomeLoader.AwesomeLoader4,
+                    color: Colors.blue,
+                  ),
                 );
               },
             ),

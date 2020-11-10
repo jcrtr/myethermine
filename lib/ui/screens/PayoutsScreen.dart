@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class PayoutsPage extends StatefulWidget {
+class PayoutsScreen extends StatefulWidget {
   @override
-  _PayoutsPageState createState() => _PayoutsPageState();
+  _PayoutsScreenState createState() => _PayoutsScreenState();
 }
 
-class _PayoutsPageState extends State<PayoutsPage> {
+class _PayoutsScreenState extends State<PayoutsScreen> {
   @override
   Widget build(BuildContext context) {
     return Container(
