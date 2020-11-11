@@ -10,6 +10,7 @@ import 'package:myethermine/ui/widgets/payouts_info.dart';
 import 'package:myethermine/ui/widgets/per_min.dart';
 import 'package:myethermine/ui/widgets/shares.dart';
 import 'package:myethermine/ui/widgets/style/background.dart';
+import 'package:myethermine/ui/widgets/style/background_item.dart';
 import 'package:myethermine/ui/widgets/style/cart_style.dart';
 import 'package:myethermine/ui/widgets/style/clipper.dart';
 import 'package:myethermine/ui/widgets/wallet.dart';
@@ -21,7 +22,6 @@ class DashboardScreen extends StatefulWidget {
 
 class _DashboardScreenState extends State<DashboardScreen> {
   Completer<void> _refreshCompleter;
-  bool _isDark;
 
   @override
   void initState() {
@@ -31,37 +31,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var _darkMode = MediaQuery.of(context).platformBrightness;
-    if (_darkMode == Brightness.dark){
-      _isDark = true;
-      print(_darkMode);
-    } else {
-      _isDark = false;
-      print(_darkMode);
-    }
     return CupertinoScrollbar(
       child: Stack(
         children: [
-          if (_isDark == false) {
-            ClipPath(
-              clipper: CustomShapeClipper(),
-              child: Container(
-                height: MediaQuery.of(context).size.height / 2,
-                decoration: BoxDecoration(
-                  // color: Color.fromRGBO(25, 1, 65, 1),
-                  gradient: LinearGradient(
-                    colors: [
-                      Colors.orange,
-                      Colors.amberAccent,
-                    ],
-                    begin: Alignment.bottomCenter,
-                    end: Alignment(0.8, 0.6),
-                  ),
-                ),
-                child: BackgroundItemsPageStyle(),
-              ),
-            ),
-          } else {},
+          Background(),
           SafeArea(
             minimum: const EdgeInsets.only(
               left: 10,

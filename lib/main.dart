@@ -24,13 +24,17 @@ void main() {
   );
 
   runApp(
-    DevicePreview(
-      // enabled: !kReleaseMode,
-      // toolBarStyle: DevicePreviewToolBarStyle.light(),
-      builder: (context) => App(
-        dashboardEthRepository: dashboardEthRepository,
-        dashboardRepository: dashboardRepository,
-      ),
+    // DevicePreview(
+    //   // enabled: !kReleaseMode,
+    //   // toolBarStyle: DevicePreviewToolBarStyle.light(),
+    //   builder: (context) => App(
+    //     dashboardEthRepository: dashboardEthRepository,
+    //     dashboardRepository: dashboardRepository,
+    //   ),
+    // ),
+    App(
+      dashboardEthRepository: dashboardEthRepository,
+      dashboardRepository: dashboardRepository,
     ),
   );
 }

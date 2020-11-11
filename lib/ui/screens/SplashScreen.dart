@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:myethermine/ui/widgets/style/background.dart';
+import 'package:myethermine/ui/widgets/style/background_item.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -67,7 +67,7 @@ class _SplashScreenState extends State<SplashScreen>
     return Scaffold(
       backgroundColor: Color.fromRGBO(25, 1, 65, 1),
       body: Stack(fit: StackFit.expand, children: [
-        BackgroundItemsPageStyle(),
+        BackgroundItem(),
         Column(
           children: [
             Expanded(

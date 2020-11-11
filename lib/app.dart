@@ -21,17 +21,19 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      locale: DevicePreview.of(context).locale,
-      builder: DevicePreview.appBuilder,
+      // locale: DevicePreview.of(context).locale,
+      // builder: DevicePreview.appBuilder,
       debugShowCheckedModeBanner: false,
       title: 'MyEth',
       themeMode: ThemeMode.system,
       theme: ThemeData(
         brightness: Brightness.light,
         primaryColor: Colors.red,
+        scaffoldBackgroundColor: Colors.grey[200],
       ),
       darkTheme: ThemeData(
         brightness: Brightness.dark,
+        scaffoldBackgroundColor: Color.fromRGBO(25, 1, 65, 1),
       ),
       // theme: ThemeData.system,
       initialRoute: '/',
